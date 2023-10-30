@@ -5,7 +5,7 @@ function y = Mutate(x, mu, m)
     
     y = x;
  
-    nagent = length(y.agents);
+    nagent = length(x.agents);
 
     for i = 1:nmu
         a = randi([1 nagent]);
@@ -21,14 +21,17 @@ function y = Mutate(x, mu, m)
 
             pos = randi([1 len_b]);
             % disp("pos: "+pos);
+            
+            % add or change new task for agent a
+            y.agents(a).task = x.agents(b).task(pos);
 
-            y.agents(a).task = [x.agents(a).task, x.agents(b).task(pos)];
+            % modify task for agent b
             if pos == len_b
                 y.agents(b).task = [x.agents(b).task(1:(pos-1)), x.agents(a).task];
             elseif pos == 1
                 y.agents(b).task = [x.agents(a).task, x.agents(b).task((pos+1):end)];
             else
-                y.agents(b).task = [x.agents(b).task(1:(pos-1)), x.agents(a).task(:), x.agents(b).task((pos+1):end)];
+                y.agents(b).task = [x.agents(b).task(1:(pos-1)), x.agents(a).task, x.agents(b).task((pos+1):end)];
             end
             
         elseif(len_b < 2 && len_a >= 2)
@@ -37,7 +40,10 @@ function y = Mutate(x, mu, m)
             pos = randi([1 len_a]);
             % disp("pos: "+pos);
             
-            y.agents(b).task = [x.agents(b).task, x.agents(a).task(pos)];
+            % add or change new task for agent b
+            y.agents(b).task = x.agents(a).task(pos);
+
+            % modify task for agent a
             if pos == len_a
                 y.agents(a).task = [x.agents(a).task(1:(pos-1)), x.agents(b).task];
             elseif pos == 1
@@ -60,7 +66,7 @@ function y = Mutate(x, mu, m)
             y.agents(a).task(pos1) = x.agents(b).task(pos2);
             y.agents(b).task(pos2) = x.agents(a).task(pos1);
         end
-
+    x = y; 
     end
-
+    
 end
