@@ -35,16 +35,7 @@ pm = 0.3;                 % Mutation Percentage
 nm = round(pm*nPop);      % Number of Mutants
 mu = 0.1;                 % Mutation Rate
 
-% ANSWER = questdlg('Choose selection method:', 'Genetic Algorithm', ...
-% 'Roulette Wheel', 'Tournament', 'Random', 'Roulette Wheel');
-% 
-% UseRouletteWheelSelection = strcmp(ANSWER, 'Roulette Wheel');
-% UseTournamentSelection = strcmp(ANSWER, 'Tournament');
-% UseRandomSelection = strcmp(ANSWER, 'Random');
-
 UseRouletteWheelSelection = true;
-UseRandomSelection = false;
-UseTournamentSelection = false;
 
 if UseRouletteWheelSelection
     beta = 8;             % Selection Pressure: for exponential distribution
@@ -93,31 +84,17 @@ WorstCost = pop(end).Cost;
 
 for it = 1:MaxIt
 
-    % disp("=================== Iteration " + it +"===============");
-
     % Calculate Selection Probabilities
-    if UseRouletteWheelSelection
-        P = exp(-beta*Costs/WorstCost);
-        P = P/sum(P);
-    end
+    P = exp(-beta*Costs/WorstCost);
+    P = P/sum(P);
     
     % Crossover
     popc = repmat(empty_individual, nc/2, 2);
     for k = 1:nc/2
         
         % Select Parents Indices
-        if UseRouletteWheelSelection
-            i1 = RouletteWheelSelection(P);
-            i2 = RouletteWheelSelection(P);
-        end
-        if UseTournamentSelection
-            i1 = TournamentSelection(pop, TournamentSize);
-            i2 = TournamentSelection(pop, TournamentSize);
-        end
-        if UseRandomSelection
-            i1 = randi([1 nPop]);
-            i2 = randi([1 nPop]);
-        end
+        i1 = RouletteWheelSelection(P);
+        i2 = RouletteWheelSelection(P);
     
         % Select Parents
         p1 = pop(i1);
@@ -175,7 +152,7 @@ for it = 1:MaxIt
     BestCost(it) = BestSol.Cost;
     
     % Show Iteration Information
-    disp(['Iteration ' num2str(it) ': Best Cost = ' num2str(BestCost(it))]);
+    disp(['Iteration ' num2str(it) ': Best Cost = ' num2str(BestCost(it)) ' - number of reached Task: ' num2str()]);
 
 end
 

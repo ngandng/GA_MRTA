@@ -20,48 +20,52 @@ function y = Mutate(x, mu, m)
     
     nmu = ceil(mu*m); % number of chromosome will be mutated
     
-    % j = randsample(nVar, nmu); % mutation position is nmu-dimention vector with unique value from 1:nVar
-    
-    % sigma = 0.1*(VarMax-VarMin); 
-    
     y = x;
-    % y(j) = x(j)+sigma*randn(size(j));
-    
-    % y = max(y, VarMin);
-    % y = min(y, VarMax);
-    nagent = length(x.agents);
+ 
+    nagent = length(y.agents);
 
     for i = 1:nmu
         a = randi([1 nagent]);
         b = randi([1 nagent]);
+        disp("A: "+ a+ " B: "+b);
 
-        len_a = length(x.agents(a).task);
-        len_b = length(x.agents(b).task);
+        len_a = length(y.agents(a).task);
+        len_b = length(y.agents(b).task);
 
         if(len_a < 2 && len_b >= 2)
+            disp("len_b: "+len_b);
 
             pos = randi([1 len_b]);
+            disp("pos: "+pos);
 
             y.agents(a).task = [x.agents(a).task, x.agents(b).task(pos)];
             if pos == len_b
-                y.agents(b).task = x.agents(b).task([1:pos-1, x.agents(a).task]);
+                y.agents(b).task = x.agents(b).task([1:(pos-1), x.agents(a).task(:)]);
+            elseif pos == 1
+                y.agents(b).task = x.agents(b).task([x.agents(a).task(:), (pos+1):end]);
             else
-                y.agents(b).task = x.agents(b).task([1:pos-1, x.agents(a).task, pos+1:end]);
+                y.agents(b).task = x.agents(b).task([1:(pos-1), x.agents(a).task(:), (pos+1):end]);
             end
             
         elseif(len_b < 2 && len_a >= 2)
+            disp("len_a: "+len_a);
 
             pos = randi([1 len_a]);
+            disp("pos: "+pos);
             
             y.agents(b).task = [x.agents(b).task, x.agents(a).task(pos)];
             if pos == len_a
-                y.agents(a).task = x.agents(a).task([1:pos-1, x.agents(b).task, pos+1:end]);
-            y.agents(a).task = x.agents(a).task([1:pos-1, x.agents(b).task, pos+1:end]);
+                y.agents(a).task = [x.agents(a).task(1:(pos-1), x.agents(b).task(:))];
+            elseif pos == 1
+                y.agents(a).task = [x.agents(b).task(:), x.agents(a).task((pos+1):end)];
+            else
+                y.agents(a).task = [x.agents(a).task(1:(pos-1)), x.agents(b).task(:), x.agents(a).task((pos+1):end)];
+            end
             
         elseif(len_a < 2 && len_b < 2)
 
-            y.agents(a).task = x.agents(b).task(:);
-            y.agents(b).task = x.agents(a).task(:);
+            y.agents(a).task = x.agents(b).task;
+            y.agents(b).task = x.agents(a).task;
         
         else
     
