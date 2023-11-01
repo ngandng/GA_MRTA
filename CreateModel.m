@@ -81,16 +81,16 @@ function model = CreateModel()
     task_track          = task_default;
     task_track.type     = TASK_TYPES.TRACK;      % task type
     task_track.value    = 100;    % task reward
-    task_track.start    = 0;      % task start time (sec)
-    task_track.end      = 100;    % task expiry time (sec)
+    % task_track.start    = 0;      % task start time (sec)
+    % task_track.end      = 100;    % task expiry time (sec)
     task_track.duration = 5;      % task default duration (sec)
     
     % Rescue
     task_rescue          = task_default;
     task_rescue.type     = TASK_TYPES.RESCUE;      % task type
     task_rescue.value    = 100;    % task reward
-    task_rescue.start    = 0;      % task start time (sec)
-    task_rescue.end      = 100;    % task expiry time (sec)
+    % task_rescue.start    = 0;      % task start time (sec)
+    % task_rescue.end      = 100;    % task expiry time (sec)
     task_rescue.duration = 15;     % task default duration (sec)
     
     
@@ -98,8 +98,8 @@ function model = CreateModel()
     % Define sample scenario
     %---------------------------------------------------------------------%
     
-    N = 5;      % number of agents
-    M = 20;     % number of tasks
+    N = 3;      % number of agents
+    M = 15;     % number of tasks
 
     % Create random agents and define parameters for each agents
     for n=1:N
@@ -109,11 +109,20 @@ function model = CreateModel()
         else
             agents(n) = agent_car;
         end
+
+        if n == 1
+            agents(1).x    = WORLD.XMIN + 0.1;
+            agents(1).y    = WORLD.YMIN + 0.1;   
+        else
+            % agents(n).x    = rand(1)*(WORLD.XMAX - WORLD.XMIN) + WORLD.XMIN;
+            % agents(n).y    = rand(1)*(WORLD.YMAX - WORLD.YMIN) + WORLD.YMIN;
+            agents(n).x    = agents(n-1).x;
+            agents(n).y    = agents(n-1).y + 0.5;
+        end
     
         % Init remaining agent parameters
         agents(n).id   = n;
-        agents(n).x    = rand(1)*(WORLD.XMAX - WORLD.XMIN) + WORLD.XMIN;
-        agents(n).y    = rand(1)*(WORLD.YMAX - WORLD.YMIN) + WORLD.YMIN;
+
         agents(n).clr  = WORLD.CLR(n,:);
     end
     
@@ -125,8 +134,8 @@ function model = CreateModel()
             tasks(m) = task_rescue;
         end
         tasks(m).id       = m;
-        tasks(m).start    = rand(1)*100;
-        tasks(m).end      = tasks(m).start + 1*tasks(m).duration;
+        % tasks(m).start    = rand(1)*100;
+        % tasks(m).end      = tasks(m).start + 1*tasks(m).duration;
         tasks(m).x        = rand(1)*(WORLD.XMAX - WORLD.XMIN) + WORLD.XMIN;
         tasks(m).y        = rand(1)*(WORLD.YMAX - WORLD.YMIN) + WORLD.YMIN;
         tasks(m).z        = rand(1)*(WORLD.ZMAX - WORLD.ZMIN) + WORLD.ZMIN;

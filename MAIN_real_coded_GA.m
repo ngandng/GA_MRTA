@@ -6,7 +6,7 @@ close all;
 %% Problem Definition
 
 % model = CreateModel();
-load('Model1_A5T20.mat');
+load('Model4_A3T15.mat');
 
 CostFunction = @(x) CostFunction(x, model);
 
@@ -14,7 +14,7 @@ CostFunction = @(x) CostFunction(x, model);
 
 MaxIt = 500;     % Maximum Number of Iterations
 
-nPop = 50;       % Population Size
+nPop = 70;       % Population Size
 
 pc = 0.7;                 % Crossover Percentage
 nc = 2*round(pc*nPop/2);  % Number of Offsprings (also Parnets)...
@@ -30,7 +30,7 @@ if UseRouletteWheelSelection
     beta = 8;             % Selection Pressure: for exponential distribution
 end
 
-pause(0.01); % Due to a bug in older versions of MATLAB
+% pause(0.01); % Due to a bug in older versions of MATLAB
 
 %% Initialization
 

@@ -2,20 +2,19 @@
 
 function cost = CostFunction(asg, model)
 
+    vel = 0.5; % velocity of the robot m/s
     N = length(asg.agents);
-    % vel = 0.5*ones([1 N]); % velocity of the robots m/s
-    vel = [model.agents(:).nom_vel];
  
     % F1 total travel distance
     F1 = 0;
-    d_agent = zeros([1 N]);
+    f_agent = zeros([1 N]);
     for i = 1:N
         % Calculate traveling distance for each agent
         ntask = length(asg.agents(i).task);
 
         if(ntask == 0) % if no task assigned for that agent
-            d_agent(i) = 0;
-            F1 = F1 +d_agent(i);
+            f_agent(i) = 0;
+            F1 = F1 +f_agent(i);
             continue;
         end
 
@@ -23,9 +22,9 @@ function cost = CostFunction(asg, model)
         
         taskID = vtask(1);
 
-        d_agent(i) = 0; % fitness function
+        f_agent(i) = 0; % fitness function
         
-        d_agent(i) = d_agent(i) + Distance(model.agents(i).x, model.agents(i).y, model.agents(i).z, ...
+        f_agent(i) = f_agent(i) + Distance(model.agents(i).x, model.agents(i).y, model.agents(i).z, ...
                                      model.tasks(taskID).x, model.tasks(taskID).y, model.tasks(taskID).z); % from robot position to task 1;
         for j = 1: ntask
             prePos = taskID;
@@ -33,9 +32,9 @@ function cost = CostFunction(asg, model)
 
             dis = Distance(model.tasks(prePos).x, model.tasks(prePos).y, model.tasks(prePos).z, ...
                            model.tasks(taskID).x, model.tasks(taskID).y, model.tasks(taskID).z); % distance from task to task
-            d_agent(i) = d_agent(i) + dis;
+            f_agent(i) = f_agent(i) + dis;
         end
-        F1 = F1 +d_agent(i);
+        F1 = F1 +f_agent(i);
     end
 
     % F2 time traveling
@@ -48,9 +47,8 @@ function cost = CostFunction(asg, model)
             taskid = asg.agents(i).task(j);
             ttime = ttime + model.tasks(taskid).duration;
         end
-        times(i) = d_agent(i)/vel(i) + ttime;
+        times(i) = 
     end
-    F2 = max(times);
 
     cost  = F1 + F2;
 end

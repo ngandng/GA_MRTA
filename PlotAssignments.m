@@ -32,9 +32,10 @@ for n=1:length(model.agents)
         Y = [model.agents(n).y, taskPrev.y];
         Z = zeros(length(X));
 
-        plot3(X,Y,Z,'-','color',Cmap(model.agents(n).type,:),'LineWidth',2);
+        plot3(X,Y,Z,'-','color',Cmap(model.agents(n).id,:),'LineWidth',2);
 
-        plot3(X(end)+[0 0], Y(end)+[0 0], Z(end)+[0 0], '^','color',Cmap(model.agents(n).id,:),'MarkerSize',10,'MarkerFaceColor',Cmap(model.agents(n).type,:));
+        plot3(X(end)+[0 0], Y(end)+[0 0], Z(end)+[0 0], '^','color',Cmap(model.agents(n).id,:),'MarkerSize',10,'MarkerFaceColor',Cmap(model.agents(n).id,:));
+        text(model.agents(n).x+offset, model.agents(n).y+offset, 0.1, ['A' num2str(n)]);
 
         for m = 2:length(sol.agents(n).task)
             if( ~isempty(sol.agents(n).task(m)) && m > 1 )
@@ -44,9 +45,9 @@ for n=1:length(model.agents)
                 Y = [taskPrev.y, taskNext.y];
                 Z = zeros(length(X));
 
-                plot3(X,Y,Z,'-','color',Cmap(model.agents(n).type,:),'LineWidth',2);
+                plot3(X,Y,Z,'-','color',Cmap(model.agents(n).id,:),'LineWidth',2);
 
-                plot3(X(end)+[0 0], Y(end)+[0 0], Z(end)+[0 0], '^','color',Cmap(model.agents(n).id,:),'MarkerSize',10,'MarkerFaceColor',Cmap(model.agents(n).type,:));
+                plot3(X(end)+[0 0], Y(end)+[0 0], Z(end)+[0 0], '^','color',Cmap(model.agents(n).id,:),'MarkerSize',10,'MarkerFaceColor',Cmap(model.agents(n).id,:));
 
                 taskPrev = taskNext;
 
@@ -59,7 +60,7 @@ end
 
 % legend([agent_quad, agent_car, tasks_track, tasks_rescue], {'Quadrotors', 'Cars', 'Tracking tasks', 'Rescue tasks'}, 'Location', 'southwest');
 hold off;
-title('Agent Paths with Time Windows')
+title('Agent Paths')
 xlabel('X');
 ylabel('Y');
 zlabel('Time');
