@@ -24,11 +24,7 @@ pm = 0.3;                 % Mutation Percentage
 nm = round(pm*nPop);      % Number of Mutants
 mu = 0.1;                 % Mutation Rate
 
-UseRouletteWheelSelection = true;
-
-if UseRouletteWheelSelection
-    beta = 8;             % Selection Pressure: for exponential distribution
-end
+beta = 8;                 % Selection Pressure: for exponential distribution
 
 % pause(0.01); % Due to a bug in older versions of MATLAB
 
