@@ -110,15 +110,8 @@ function model = CreateModel()
             agents(n) = agent_car;
         end
 
-        if n == 1
-            agents(1).x    = WORLD.XMIN + 0.1;
-            agents(1).y    = WORLD.YMIN + 0.1;   
-        else
-            % agents(n).x    = rand(1)*(WORLD.XMAX - WORLD.XMIN) + WORLD.XMIN;
-            % agents(n).y    = rand(1)*(WORLD.YMAX - WORLD.YMIN) + WORLD.YMIN;
-            agents(n).x    = agents(n-1).x;
-            agents(n).y    = agents(n-1).y + 0.5;
-        end
+        agents(n).x    = rand(1)*(WORLD.XMAX - WORLD.XMIN) + WORLD.XMIN;
+        agents(n).y    = rand(1)*(WORLD.YMAX - WORLD.YMIN) + WORLD.YMIN;
     
         % Init remaining agent parameters
         agents(n).id   = n;

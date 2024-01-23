@@ -1,4 +1,5 @@
 
+
 function PlotAssignments(model, sol, figureID)
 
 % Set plotting parameters
@@ -8,13 +9,18 @@ offset = (model.XMAX - model.XMIN)/100;
 
 Cmap   = colormap(lines);
 
+linS = {'-','-.','--',':'};
+
 m_tasks = model.tasks;
 
 % Plot tasks
 hold on;
-% for m = 1:length(m_tasks)
-%     plot3(m_tasks(m).x + [0 0], m_tasks(m).y + [0 0], [m_tasks(m).start m_tasks(m).end],'x:','color',Cmap(m_tasks(m).type,:),'LineWidth',3);
-% end
+for m = 1:length(m_tasks)
+    plot3(m_tasks(m).x + [0 0], m_tasks(m).y + [0 0], [m_tasks(m).start m_tasks(m).end],'square','color',Cmap(m_tasks(m).id,:),'LineWidth',10);
+    text(m_tasks(m).x+offset, m_tasks(m).y+offset, 0.1, ['T' num2str(m)]);
+    % num_req = m_tasks(m).req;
+    % text(m_tasks(m).x-offset, m_tasks(m).y-offset, 0.1, ['(' num2str(num_req) ')']);
+end
 
 % Plot agents
 for n=1:length(model.agents)
@@ -32,9 +38,9 @@ for n=1:length(model.agents)
         Y = [model.agents(n).y, taskPrev.y];
         Z = zeros(length(X));
 
-        plot3(X,Y,Z,'-','color',Cmap(model.agents(n).id,:),'LineWidth',2);
+        plot3(X,Y,Z,'linestyle',linS(n),'color',Cmap(model.agents(n).id,:),'LineWidth',2);
 
-        plot3(X(end)+[0 0], Y(end)+[0 0], Z(end)+[0 0], '^','color',Cmap(model.agents(n).id,:),'MarkerSize',10,'MarkerFaceColor',Cmap(model.agents(n).id,:));
+        % plot3(X(end)+[0 0], Y(end)+[0 0], Z(end)+[0 0], '^','color',Cmap(model.agents(n).id,:),'MarkerSize',10,'MarkerFaceColor',Cmap(model.tasks(n).id+5,:));
         text(model.agents(n).x+offset, model.agents(n).y+offset, 0.1, ['A' num2str(n)]);
 
         for m = 2:length(sol.agents(n).task)
@@ -45,9 +51,9 @@ for n=1:length(model.agents)
                 Y = [taskPrev.y, taskNext.y];
                 Z = zeros(length(X));
 
-                plot3(X,Y,Z,'-','color',Cmap(model.agents(n).id,:),'LineWidth',2);
+                plot3(X,Y,Z,'linestyle',linS(n),'color',Cmap(model.agents(n).id,:),'LineWidth',2);
 
-                plot3(X(end)+[0 0], Y(end)+[0 0], Z(end)+[0 0], '^','color',Cmap(model.agents(n).id,:),'MarkerSize',10,'MarkerFaceColor',Cmap(model.agents(n).id,:));
+                % plot3(X(end)+[0 0], Y(end)+[0 0], Z(end)+[0 0], '^','color',Cmap(model.agents(n).id,:),'MarkerSize',10,'MarkerFaceColor',Cmap(model.tasks(n).id+5,:));
 
                 taskPrev = taskNext;
 
@@ -55,6 +61,12 @@ for n=1:length(model.agents)
                 break;
             end
         end
+
+        X = [taskPrev.x, model.agents(n).x];
+        Y = [taskPrev.y, model.agents(n).y];
+        Z = zeros(length(X));
+
+        plot3(X,Y,Z,'linestyle',linS(n),'color',Cmap(model.agents(n).id,:),'LineWidth',2);
     end
 end
 

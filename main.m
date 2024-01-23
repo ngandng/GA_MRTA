@@ -5,8 +5,8 @@ close all;
 
 %% Problem Definition
 
-% model = CreateModel();
-load('Model4_A3T15.mat');
+model = CreateModel();
+% load('modelTest3.mat');
 
 CostFunction = @(x) CostFunction(x, model);
 
@@ -138,12 +138,12 @@ end
 
 %% Results
 PlotAssignments(model, BestSol.Position, 1);
-
-figure;
-% semilogy(BestCost, 'LineWidth', 2);
-plot(BestCost, 'LineWidth', 2);
-xlabel('Iteration');
-ylabel('Cost');
-grid on;
+% 
+% figure;
+% % semilogy(BestCost, 'LineWidth', 2);
+% plot(BestCost, 'LineWidth', 2);
+% xlabel('Iteration');
+% ylabel('Cost');
+% grid on;
 
 
